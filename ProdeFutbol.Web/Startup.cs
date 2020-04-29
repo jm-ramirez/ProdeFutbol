@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProdeFutbol.Web.Data;
+using ProdeFutbol.Web.Helpers;
 
 namespace ProdeFutbol.Web
 {
@@ -36,7 +37,8 @@ namespace ProdeFutbol.Web
                 cfg.UseSqlServer(Configuration.GetConnectionString("ProdeFutbolConnection"));
             });
 
-
+            services.AddScoped<IImageHelper, ImageHelper>();
+            services.AddScoped<IConverterHelper, ConverterHelper>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
