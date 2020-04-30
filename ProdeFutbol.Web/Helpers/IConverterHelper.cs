@@ -1,5 +1,7 @@
-﻿using ProdeFutbol.Web.Data.Entities;
+﻿using ProdeFutbol.Common.Models;
+using ProdeFutbol.Web.Data.Entities;
 using ProdeFutbol.Web.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ProdeFutbol.Web.Helpers
@@ -25,6 +27,10 @@ namespace ProdeFutbol.Web.Helpers
         Task<MatchEntity> ToMatchEntityAsync(MatchViewModel model, bool isNew);
 
         MatchViewModel ToMatchViewModel(MatchEntity matchEntity);
+
+        TournamentResponse ToTournamentResponse(TournamentEntity tournamentEntity);
+
+        List<TournamentResponse> ToTournamentResponse(List<TournamentEntity> tournamentEntities);
 
     }
 }
