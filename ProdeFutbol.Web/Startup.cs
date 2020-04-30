@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProdeFutbol.Web.Data;
+using ProdeFutbol.Web.Data.Entities;
 using ProdeFutbol.Web.Helpers;
 
 namespace ProdeFutbol.Web
@@ -32,6 +34,18 @@ namespace ProdeFutbol.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddIdentity<UserEntity, IdentityRole>(cfg =>
+            {   // VALIDACIONES DE FORMATO DE CONTRASEÑA
+                cfg.User.RequireUniqueEmail = true; //Requiere email unico
+                cfg.Password.RequireDigit = false; //NO requiere digito de verificacion
+                cfg.Password.RequiredUniqueChars = 0; //NO requiere caracteres especiales
+                cfg.Password.RequireLowercase = false; //NO requiere minúsculas
+                cfg.Password.RequireNonAlphanumeric = false; //NO requiere al menos un caracter alfanumérico
+                cfg.Password.RequireUppercase = false; //NO requiere mayúsula
+                cfg.Password.RequiredLength = 6; //Mínimo un password de 6 caracteres
+            }).AddEntityFrameworkStores<DataContext>();
+
+
             services.AddDbContext<DataContext>(cfg =>
             {
                 cfg.UseSqlServer(Configuration.GetConnectionString("ProdeFutbolConnection"));
@@ -41,6 +55,7 @@ namespace ProdeFutbol.Web
             services.AddScoped<IImageHelper, ImageHelper>();
             services.AddScoped<IConverterHelper, ConverterHelper>();
             services.AddScoped<ICombosHelper, CombosHelper>();
+            services.AddScoped<IUserHelper, UserHelper>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -59,6 +74,7 @@ namespace ProdeFutbol.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>
