@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProdeFutbol.Web.Data;
 using ProdeFutbol.Web.Data.Entities;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace ProdeFutbol.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class TeamsController : Controller
     {
         private readonly DataContext _context;

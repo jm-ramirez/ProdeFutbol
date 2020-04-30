@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ProdeFutbol.Web.Data.Entities;
+using ProdeFutbol.Web.Models;
 using System.Threading.Tasks;
 
 namespace ProdeFutbol.Web.Helpers
@@ -15,5 +16,10 @@ namespace ProdeFutbol.Web.Helpers
         Task AddUserToRoleAsync(UserEntity user, string roleName);
 
         Task<bool> IsUserInRoleAsync(UserEntity user, string roleName);
+
+        Task<SignInResult> LoginAsync(LoginViewModel model);
+
+        Task LogoutAsync();
+
     }
 }
