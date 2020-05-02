@@ -38,6 +38,11 @@ namespace ProdeFutbol.Web.Data.Entities
         [Display(Name = "Logo")]
         public string LogoPath { get; set; }
 
+        [Display(Name = "Logo")]
+        public string LogoFullPath => string.IsNullOrEmpty(LogoPath)
+            ? "https://prodefutbolweb.azurewebsites.net//images/noimage.png"
+            : $"https://prodefutbolweb.azurewebsites.net{LogoPath.Substring(1)}";
+
         public ICollection<GroupEntity> Groups { get; set; }
     }
 }

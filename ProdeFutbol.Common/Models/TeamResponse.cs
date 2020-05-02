@@ -7,5 +7,10 @@
         public string Name { get; set; }
 
         public string LogoPath { get; set; }
+
+        public string LogoFullPath => string.IsNullOrEmpty(LogoPath)
+            ? "https://prodefutbolweb.azurewebsites.net//images/noimage.png"
+            : $"https://prodefutbolweb.azurewebsites.net{LogoPath.Substring(1)}";
+
     }
 }
