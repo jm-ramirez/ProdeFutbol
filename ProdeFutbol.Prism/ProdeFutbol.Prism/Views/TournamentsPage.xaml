@@ -15,6 +15,9 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectTournamentCommand}"/>
+                        </Grid.GestureRecognizers>
                         <Grid.ColumnDefinitions><!--DEFINO EL TAMAÑO DE LAS TRES COLUMNAS-->
                             <ColumnDefinition Width="Auto" /><!--1ER COL-->
                             <ColumnDefinition Width="*" /><!--2DA COL-->

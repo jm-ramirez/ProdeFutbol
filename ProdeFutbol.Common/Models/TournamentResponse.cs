@@ -25,6 +25,6 @@ namespace ProdeFutbol.Common.Models
             ? "https://prodefutbolweb.azurewebsites.net//images/noimage.png"
             : $"https://prodefutbolweb.azurewebsites.net{LogoPath.Substring(1)}";
 
-        public ICollection<GroupResponse> Groups { get; set; }
+        public List<GroupResponse> Groups { get; set; }
     }
 }
