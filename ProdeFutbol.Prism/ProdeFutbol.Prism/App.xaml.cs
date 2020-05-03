@@ -4,6 +4,7 @@ using ProdeFutbol.Common.Helpers;
 using ProdeFutbol.Common.Services;
 using ProdeFutbol.Prism.ViewModels;
 using ProdeFutbol.Prism.Views;
+using Syncfusion.Licensing;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -18,6 +19,8 @@ namespace ProdeFutbol.Prism
 
         protected override async void OnInitialized()
         {
+            SyncfusionLicenseProvider.RegisterLicense("MjUxMTcxQDMxMzgyZTMxMmUzMGVQTWlyb1pBQVA2UDY5V1FqN1VYanIvWTBhTVEzbVBpRDJHR0grbTZ6bjg9");
+
             InitializeComponent();
 
             await NavigationService.NavigateAsync("/ProdeMasterDetailPage/NavigationPage/TournamentsPage");
