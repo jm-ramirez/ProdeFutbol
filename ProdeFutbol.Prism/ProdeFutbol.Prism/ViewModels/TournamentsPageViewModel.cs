@@ -22,10 +22,10 @@ namespace ProdeFutbol.Prism.ViewModels
             LoadTournamentsAsync();
         }
 
-        public bool IsRunning 
+        public bool IsRunning
         {
-            get => _isRunning; 
-            set=> SetProperty(ref _isRunning, value); 
+            get => _isRunning;
+            set => SetProperty(ref _isRunning, value);
         }
 
         public List<TournamentItemViewModel> Tournaments
@@ -36,14 +36,21 @@ namespace ProdeFutbol.Prism.ViewModels
         private async void LoadTournamentsAsync()
         {
             IsRunning = true;
-
             string url = App.Current.Resources["UrlAPI"].ToString();
+            bool connection = await _apiService.CheckConnectionAsync(url);
+            if (!connection)
+            {
+                IsRunning = false;
+                await App.Current.MainPage.DisplayAlert("Error", "Check the internet connection.", "Accept");
+                return;
+            }
+
             Response response = await _apiService.GetListAsync<TournamentResponse>(
                 url,
                 "/api",
                 "/Tournaments");
-
             IsRunning = false;
+
 
             if (!response.IsSuccess)
             {
@@ -54,7 +61,7 @@ namespace ProdeFutbol.Prism.ViewModels
                 return;
             }
 
-            var tournaments = (List<TournamentResponse>)response.Result;
+            List<TournamentResponse> tournaments = (List<TournamentResponse>)response.Result;
             Tournaments = tournaments.Select(t => new TournamentItemViewModel(_navigationService)
             {
                 EndDate = t.EndDate,
