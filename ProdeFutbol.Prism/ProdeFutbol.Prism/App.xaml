@@ -13,7 +13,7 @@
             <x:String x:Key="UrlAPI">https://prodefutbolweb.azurewebsites.net/</x:String>
 
             <!-- Colors -->
-            <Color x:Key="ColorBackgroud">#4CB1F7</Color> <!--#54E85D-->
+            <Color x:Key="ColorBackgroud">#77C1F3</Color> <!--#54E85D-->
             <Color x:Key="ColorPrimary">#191919</Color>
             <Color x:Key="ColorSecondary">#0850FF</Color> <!--#90FF69-->
             <Color x:Key="ColorDanger">#FFFFFF</Color>
