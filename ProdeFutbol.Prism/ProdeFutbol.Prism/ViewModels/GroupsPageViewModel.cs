@@ -1,6 +1,7 @@
 ﻿using Prism.Navigation;
 using ProdeFutbol.Common.Helpers;
 using ProdeFutbol.Common.Models;
+using ProdeFutbol.Prism.Helpers;
 using System.Collections.Generic;
 
 namespace ProdeFutbol.Prism.ViewModels
@@ -15,7 +16,7 @@ namespace ProdeFutbol.Prism.ViewModels
         public GroupsPageViewModel(INavigationService navigationService, ITransformHelper transformHelper)
             : base(navigationService)
         {
-            Title = "Groups";
+            Title = Languages.Groups;
             _transformHelper = transformHelper;
         }
 

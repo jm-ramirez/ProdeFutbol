@@ -2,6 +2,7 @@
 using Prism.Navigation;
 using ProdeFutbol.Common.Helpers;
 using ProdeFutbol.Common.Models;
+using ProdeFutbol.Prism.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,7 +15,7 @@ namespace ProdeFutbol.Prism.ViewModels
 
         public ClosedMatchesPageViewModel(INavigationService navigationService) : base(navigationService)
         {
-            Title = "Closed";
+            Title = Languages.Closed;
             LoadMatches();
         }
 

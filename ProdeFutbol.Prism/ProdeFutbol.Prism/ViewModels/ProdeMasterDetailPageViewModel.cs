@@ -1,5 +1,6 @@
 ﻿using Prism.Navigation;
 using ProdeFutbol.Common.Models;
+using ProdeFutbol.Prism.Helpers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -26,33 +27,34 @@ namespace ProdeFutbol.Prism.ViewModels
                 {
                     Icon = "tournament",
                     PageName = "TournamentsPage",
-                    Title = "Tournaments"
+                    Title = Languages.Tournaments
                 },
                 new Menu
                 {
                     Icon = "prediction",
                     PageName = "MyPredictionsPage",
-                    Title = "My Predictions"
+                    Title = Languages.MyPredictions
                 },
                 new Menu
                 {
                     Icon = "medal",
                     PageName = "MyPositionsPage",
-                    Title = "My Positions"
+                    Title = Languages.MyPositions
                 },
                 new Menu
                 {
                     Icon = "user",
                     PageName = "ModifyUserPage",
-                    Title = "Modify User"
+                    Title = Languages.ModifyUser
                 },
                 new Menu
                 {
                     Icon = "login",
                     PageName = "LoginPage",
-                    Title = "Login"
+                    Title = Languages.Login
                 }
-            };
+
+        };
 
             Menus = new ObservableCollection<MenuItemViewModel>(
                 menus.Select(m => new MenuItemViewModel(_navigationService)

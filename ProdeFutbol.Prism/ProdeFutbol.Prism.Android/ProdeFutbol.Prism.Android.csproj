@@ -71,6 +71,7 @@
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementations\Localize.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -97,6 +98,10 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ProdeFutbol.Common\ProdeFutbol.Common.csproj">
+      <Project>{BD44AF1F-AC6A-45E3-9921-C475DFB85574}</Project>
+      <Name>ProdeFutbol.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProdeFutbol.Prism\ProdeFutbol.Prism.csproj">
       <Project>{A682884C-CB44-4A89-B752-27BB634E0ABE}</Project>
       <Name>ProdeFutbol.Prism</Name>

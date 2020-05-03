@@ -1,6 +1,7 @@
 ﻿using Prism.Navigation;
 using ProdeFutbol.Common.Models;
 using ProdeFutbol.Common.Services;
+using ProdeFutbol.Prism.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -41,7 +42,7 @@ namespace ProdeFutbol.Prism.ViewModels
             if (!connection)
             {
                 IsRunning = false;
-                await App.Current.MainPage.DisplayAlert("Error", "Check the internet connection.", "Accept");
+                await App.Current.MainPage.DisplayAlert(Languages.Error, Languages.ConnectionError, Languages.Accept);
                 return;
             }
 
@@ -55,10 +56,9 @@ namespace ProdeFutbol.Prism.ViewModels
             if (!response.IsSuccess)
             {
                 await App.Current.MainPage.DisplayAlert(
-                    "Error",
-                    response.Message,
-                    "Accept");
-                return;
+                    Languages.Error, 
+                    response.Message, 
+                    Languages.Accept);
             }
 
             List<TournamentResponse> tournaments = (List<TournamentResponse>)response.Result;
