@@ -1,5 +1,7 @@
-﻿using Prism.Commands;
+﻿using Newtonsoft.Json;
+using Prism.Commands;
 using Prism.Navigation;
+using ProdeFutbol.Common.Helpers;
 using ProdeFutbol.Common.Models;
 using ProdeFutbol.Prism.Views;
 using System;
@@ -28,7 +30,8 @@ namespace ProdeFutbol.Prism.ViewModels
                 { "tournament", this }
             };
 
-            await _navigationService.NavigateAsync(nameof(MatchesPage), parameters);
+            Settings.Tournament = JsonConvert.SerializeObject(this);
+            await _navigationService.NavigateAsync(nameof(TournamentTabbedPage), parameters);
         }
     }
 }

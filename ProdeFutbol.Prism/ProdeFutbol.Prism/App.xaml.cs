@@ -20,7 +20,7 @@ namespace ProdeFutbol.Prism
         {
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/TournamentsPage");
+            await NavigationService.NavigateAsync("/ProdeMasterDetailPage/NavigationPage/TournamentsPage");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -31,6 +31,13 @@ namespace ProdeFutbol.Prism
             containerRegistry.RegisterForNavigation<TournamentsPage, TournamentsPageViewModel>();
             containerRegistry.RegisterForNavigation<GroupsPage, GroupsPageViewModel>();
             containerRegistry.RegisterForNavigation<MatchesPage, MatchesPageViewModel>();
+            containerRegistry.RegisterForNavigation<ClosedMatchesPage, ClosedMatchesPageViewModel>();
+            containerRegistry.RegisterForNavigation<TournamentTabbedPage, TournamentTabbedPageViewModel>();
+            containerRegistry.RegisterForNavigation<ProdeMasterDetailPage, ProdeMasterDetailPageViewModel>();
+            containerRegistry.RegisterForNavigation<MyPredictionsPage, MyPredictionsPageViewModel>();
+            containerRegistry.RegisterForNavigation<MyPositionsPage, MyPositionsPageViewModel>();
+            containerRegistry.RegisterForNavigation<ModifyUserPage, ModifyUserPageViewModel>();
+            containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
         }
     }
 }
