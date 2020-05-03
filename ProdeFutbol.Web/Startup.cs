@@ -34,6 +34,12 @@ namespace ProdeFutbol.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/NotAuthorized";
+                options.AccessDeniedPath = "/Account/NotAuthorized";
+            });
+
             services.AddIdentity<UserEntity, IdentityRole>(cfg =>
             {   // VALIDACIONES DE FORMATO DE CONTRASEÑA
                 cfg.User.RequireUniqueEmail = true; //Requiere email unico
@@ -72,6 +78,7 @@ namespace ProdeFutbol.Web
                 app.UseHsts();
             }
 
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();

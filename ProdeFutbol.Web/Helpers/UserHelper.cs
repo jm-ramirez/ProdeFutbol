@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using ProdeFutbol.Common.Enums;
+using ProdeFutbol.Web.Data;
 using ProdeFutbol.Web.Data.Entities;
 using ProdeFutbol.Web.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace ProdeFutbol.Web.Helpers
@@ -10,16 +14,57 @@ namespace ProdeFutbol.Web.Helpers
         private readonly UserManager<UserEntity> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<UserEntity> _signInManager;
+        private readonly DataContext _context;
 
         public UserHelper(
             UserManager<UserEntity> userManager,
             RoleManager<IdentityRole> roleManager,
-            SignInManager<UserEntity> signInManager)
+            SignInManager<UserEntity> signInManager,
+            DataContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
+            _context = context;
         }
+
+        public async Task<IdentityResult> ChangePasswordAsync(UserEntity user, string oldPassword, string newPassword)
+        {
+            return await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+        }
+
+        public async Task<IdentityResult> UpdateUserAsync(UserEntity user)
+        {
+            return await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<UserEntity> AddUserAsync(AddUserViewModel model, string path, UserType userType)
+        {
+            UserEntity userEntity = new UserEntity
+            {
+                Address = model.Address,
+                Document = model.Document,
+                Email = model.Username,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                PicturePath = path,
+                PhoneNumber = model.PhoneNumber,
+                Team = await _context.Teams.FindAsync(model.TeamId),
+                UserName = model.Username,
+                UserType = userType
+            };
+
+            IdentityResult result = await _userManager.CreateAsync(userEntity, model.Password);
+            if (result != IdentityResult.Success)
+            {
+                return null;
+            }
+
+            UserEntity newUser = await GetUserAsync(model.Username);
+            await AddUserToRoleAsync(newUser, userEntity.UserType.ToString());
+            return newUser;
+        }
+
         public async Task<IdentityResult> AddUserAsync(UserEntity user, string password)
         {
             return await _userManager.CreateAsync(user, password);
@@ -43,9 +88,19 @@ namespace ProdeFutbol.Web.Helpers
 
         }
 
-        public async Task<UserEntity> GetUserByEmailAsync(string email)
+        public async Task<UserEntity> GetUserAsync(string email)
         {
-            return await _userManager.FindByEmailAsync(email);
+            return await _context.Users
+                .Include(u => u.Team)
+                .FirstOrDefaultAsync(u => u.Email == email);
+
+        }
+
+        public async Task<UserEntity> GetUserAsync(Guid userId)
+        {
+            return await _context.Users
+                .Include(u => u.Team)
+                .FirstOrDefaultAsync(u => u.Id == userId.ToString());
         }
 
         public async Task<bool> IsUserInRoleAsync(UserEntity user, string roleName)
