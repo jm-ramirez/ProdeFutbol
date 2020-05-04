@@ -44,6 +44,8 @@ namespace ProdeFutbol.Web
 
             services.AddIdentity<UserEntity, IdentityRole>(cfg =>
             {   // VALIDACIONES DE FORMATO DE CONTRASEÑA
+                cfg.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+                cfg.SignIn.RequireConfirmedEmail = true;
                 cfg.User.RequireUniqueEmail = true; //Requiere email unico
                 cfg.Password.RequireDigit = false; //NO requiere digito de verificacion
                 cfg.Password.RequiredUniqueChars = 0; //NO requiere caracteres especiales
@@ -51,7 +53,9 @@ namespace ProdeFutbol.Web
                 cfg.Password.RequireNonAlphanumeric = false; //NO requiere al menos un caracter alfanumérico
                 cfg.Password.RequireUppercase = false; //NO requiere mayúsula
                 cfg.Password.RequiredLength = 6; //Mínimo un password de 6 caracteres
-            }).AddEntityFrameworkStores<DataContext>();
+            })
+                .AddDefaultTokenProviders()
+                .AddEntityFrameworkStores<DataContext>();
 
             services.AddAuthentication()
                 .AddCookie()
@@ -76,6 +80,8 @@ namespace ProdeFutbol.Web
             services.AddScoped<IConverterHelper, ConverterHelper>();
             services.AddScoped<ICombosHelper, CombosHelper>();
             services.AddScoped<IUserHelper, UserHelper>();
+            services.AddScoped<IMailHelper, MailHelper>();
+            services.AddScoped<IMatchHelper, MatchHelper>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

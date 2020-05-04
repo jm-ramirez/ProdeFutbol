@@ -26,10 +26,16 @@ namespace ProdeFutbol.Web.Data
             await CheckTeamsAsync();
             await CheckTournamentsAsync();
             await CheckUserAsync("1010", "Juan", "Ramirez", "juanchiramirez5@gmail.com", "341 585 3694", "Moreno 2259", UserType.Admin);
-            await CheckUserAsync("2020", "Juan", "Ramirez", "juan_m_ramirez5@hotmail.com", "341 585 3694", "Moreno 2259", UserType.User);
-            await CheckUserAsync("3030", "Juan", "Ramirez", "juanchinob_d10s@hotmail.com", "341 585 3694", "Moreno 2259", UserType.User);
-            await CheckUserAsync("4040", "Juan", "Ramirez", "ramirezjmr90@gmail.com", "341 585 3694", "Moreno 2259", UserType.User);
+            await CheckUsersAsync();
             await CheckPreditionsAsync();
+        }
+
+        private async Task CheckUsersAsync() //Este metodo es para crear 100 usuario aleatorios
+        {
+            for (int i = 1; i <= 100; i++)
+            {
+                await CheckUserAsync($"100{i}", "User", $"{i}", $"user{i}@yopmail.com", "350 634 2747", "Calle Luna Calle Sol", UserType.User);
+            }
         }
 
         private async Task CheckPreditionsAsync()
@@ -91,6 +97,9 @@ namespace ProdeFutbol.Web.Data
 
                 await _userHelper.AddUserAsync(user, "123456"); //por defecto pongo contraseña 123456
                 await _userHelper.AddUserToRoleAsync(user, userType.ToString()); //asigno tipo de usuario
+
+                string token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                await _userHelper.ConfirmEmailAsync(user, token);
             }
 
             return user;
