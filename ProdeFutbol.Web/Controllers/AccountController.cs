@@ -1,10 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using ProdeFutbol.Common.Enums;
 using ProdeFutbol.Web.Data;
 using ProdeFutbol.Web.Data.Entities;
 using ProdeFutbol.Web.Helpers;
 using ProdeFutbol.Web.Models;
+using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ProdeFutbol.Web.Controllers
@@ -15,17 +21,60 @@ namespace ProdeFutbol.Web.Controllers
         private readonly IImageHelper _imageHelper;
         private readonly ICombosHelper _combosHelper;
         private readonly DataContext _context;
+        private readonly IConfiguration _configuration;
 
         public AccountController(
             IUserHelper userHelper,
             IImageHelper imageHelper,
             ICombosHelper combosHelper,
-            DataContext context)
+            DataContext context,
+            IConfiguration configuration)
         {
             _userHelper = userHelper;
             _imageHelper = imageHelper;
             _combosHelper = combosHelper;
             _context = context;
+            _configuration = configuration;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateToken([FromBody] LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                UserEntity user = await _userHelper.GetUserAsync(model.Username);
+                if (user != null)
+                {
+                    Microsoft.AspNetCore.Identity.SignInResult result = await _userHelper.ValidatePasswordAsync(user, model.Password);
+
+                    if (result.Succeeded)
+                    {
+                        Claim[] claims = new[]
+                        {
+                            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                        };
+
+                        SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
+                        SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                        JwtSecurityToken token = new JwtSecurityToken(
+                            _configuration["Tokens:Issuer"],
+                            _configuration["Tokens:Audience"],
+                            claims,
+                            expires: DateTime.UtcNow.AddDays(99),
+                            signingCredentials: credentials); //Pongo que el token expire a los 99 dias.
+                        var results = new
+                        {
+                            token = new JwtSecurityTokenHandler().WriteToken(token),
+                            expiration = token.ValidTo
+                        };
+
+                        return Created(string.Empty, results);
+                    }
+                }
+            }
+
+            return BadRequest();
         }
 
         public IActionResult ChangePassword()
@@ -38,8 +87,8 @@ namespace ProdeFutbol.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userHelper.GetUserAsync(User.Identity.Name);
-                var result = await _userHelper.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                UserEntity user = await _userHelper.GetUserAsync(User.Identity.Name);
+                Microsoft.AspNetCore.Identity.IdentityResult result = await _userHelper.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("ChangeUser");
@@ -101,7 +150,7 @@ namespace ProdeFutbol.Web.Controllers
             model.Teams = _combosHelper.GetComboTeams();
             return View(model);
         }
-        
+
         public IActionResult Register()
         {
             AddUserViewModel model = new AddUserViewModel
@@ -140,7 +189,7 @@ namespace ProdeFutbol.Web.Controllers
                     Username = model.Username
                 };
 
-                var result2 = await _userHelper.LoginAsync(loginViewModel);
+                Microsoft.AspNetCore.Identity.SignInResult result2 = await _userHelper.LoginAsync(loginViewModel);
 
                 if (result2.Succeeded)
                 {
