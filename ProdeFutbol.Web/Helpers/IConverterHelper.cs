@@ -36,5 +36,6 @@ namespace ProdeFutbol.Web.Helpers
 
         List<TournamentResponse> ToTournamentResponse(List<TournamentEntity> tournamentEntities);
 
+        UserResponse ToUserResponse(UserEntity user);
     }
 }
