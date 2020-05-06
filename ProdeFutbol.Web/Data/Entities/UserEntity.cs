@@ -2,6 +2,7 @@
 using ProdeFutbol.Common.Enums;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace ProdeFutbol.Web.Data.Entities
 {
@@ -42,5 +43,6 @@ namespace ProdeFutbol.Web.Data.Entities
         [Display(Name = "User")]
         public string FullNameWithDocument => $"{FirstName} {LastName} - {Document}";
 
+        public int Points => Predictions == null ? 0 : Predictions.Sum(p => p.Points);
     }
 }

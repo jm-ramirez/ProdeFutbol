@@ -27,5 +27,10 @@ namespace ProdeFutbol.Common.Models
         public string FullName => $"{FirstName} {LastName}";
 
         public string FullNameWithDocument => $"{FirstName} {LastName} - {Document}";
+
+        public string PictureFullPath => string.IsNullOrEmpty(PicturePath)
+            ? "https://prodefutbolweb.azurewebsites.net//images/noimage.png"
+            : $"https://prodefutbolweb.azurewebsites.net{PicturePath.Substring(1)}";
+
     }
 }
