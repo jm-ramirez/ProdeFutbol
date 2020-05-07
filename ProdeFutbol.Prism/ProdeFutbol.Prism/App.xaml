@@ -38,6 +38,7 @@
 
             <Style x:Key="DangerButton" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="{StaticResource ColorDanger}" />
+                <Setter Property="TextColor" Value="{StaticResource ColorFont}" />
             </Style>
 
 

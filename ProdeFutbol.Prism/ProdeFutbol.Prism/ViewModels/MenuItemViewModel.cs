@@ -1,6 +1,7 @@
 ﻿using ProdeFutbol.Common.Models;
 using Prism.Commands;
 using Prism.Navigation;
+using ProdeFutbol.Common.Helpers;
 
 namespace ProdeFutbol.Prism.ViewModels
 {
@@ -18,6 +19,13 @@ namespace ProdeFutbol.Prism.ViewModels
 
         private async void SelectMenuAsync()
         {
+            if (PageName == "LoginPage" && Settings.IsLogin)
+            {
+                Settings.IsLogin = false;
+                Settings.User = null;
+                Settings.Token = null;
+            }
+
             await _navigationService.NavigateAsync($"/ProdeMasterDetailPage/NavigationPage/{PageName}");
         }
     }

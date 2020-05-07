@@ -15,7 +15,25 @@ namespace ProdeFutbol.Prism.Helpers
             DependencyService.Get<ILocalize>().SetLocale(ci);
         }
 
+        public static string Logout => Resource.Logout;
+
+        public static string LoginError => Resource.LoginError;
+
         public static string Culture { get; set; }
+
+        public static string Email => Resource.Email;
+
+        public static string EmailPlaceHolder => Resource.EmailPlaceHolder;
+
+        public static string EmailError => Resource.EmailError;
+
+        public static string Password => Resource.Password;
+
+        public static string PasswordError => Resource.PasswordError;
+
+        public static string PasswordPlaceHolder => Resource.PasswordPlaceHolder;
+
+        public static string Register => Resource.Register;
 
         public static string Accept => Resource.Accept;
 
