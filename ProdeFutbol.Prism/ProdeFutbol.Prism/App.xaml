@@ -11,6 +11,7 @@
 
             <!-- Parameters -->
             <x:String x:Key="UrlAPI">https://prodefutbolweb.azurewebsites.net/</x:String>
+            <x:String x:Key="UrlNoImage">https://prodefutbolweb.azurewebsites.net/images/noimage.png</x:String>
 
             <!-- Colors -->
             <Color x:Key="ColorBackgroud">#77C1F3</Color> <!--#54E85D-->
@@ -41,6 +42,13 @@
                 <Setter Property="TextColor" Value="{StaticResource ColorFont}" />
             </Style>
 
+            <Style TargetType="Entry">
+                <Setter Property="BackgroundColor" Value="{StaticResource ColorFontInverse}" />
+            </Style>
+
+            <Style TargetType="Picker">
+                <Setter Property="BackgroundColor" Value="{StaticResource ColorFontInverse}" />
+            </Style>
 
             <!-- Data Templates -->
             <DataTemplate x:Key="MatchTemplate">

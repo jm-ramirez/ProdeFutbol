@@ -5,6 +5,7 @@ using ProdeFutbol.Common.Helpers;
 using ProdeFutbol.Common.Models;
 using ProdeFutbol.Common.Services;
 using ProdeFutbol.Prism.Helpers;
+using ProdeFutbol.Prism.Views;
 
 namespace ProdeFutbol.Prism.ViewModels
 {
@@ -117,8 +118,10 @@ namespace ProdeFutbol.Prism.ViewModels
 
         }
 
-        private void RegisterAsync()
+        private async void RegisterAsync()
         {
+            await _navigationService.NavigateAsync(nameof(RegisterPage));
         }
+
     }
 }
