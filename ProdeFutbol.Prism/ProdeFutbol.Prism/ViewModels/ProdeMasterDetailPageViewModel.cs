@@ -1,8 +1,11 @@
 ﻿using Newtonsoft.Json;
+using Prism.Commands;
 using Prism.Navigation;
 using ProdeFutbol.Common.Helpers;
 using ProdeFutbol.Common.Models;
+using ProdeFutbol.Common.Services;
 using ProdeFutbol.Prism.Helpers;
+using ProdeFutbol.Prism.Views;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -12,14 +15,22 @@ namespace ProdeFutbol.Prism.ViewModels
     public class ProdeMasterDetailPageViewModel : ViewModelBase
     {
         private readonly INavigationService _navigationService;
+        private readonly IApiService _apiService;
+        private static ProdeMasterDetailPageViewModel _instance;
         private UserResponse _user;
+        private DelegateCommand _modifyUserCommand;
 
-        public ProdeMasterDetailPageViewModel(INavigationService navigationService) : base(navigationService)
+        public ProdeMasterDetailPageViewModel(INavigationService navigationService, IApiService apiService) 
+            : base(navigationService)
         {
+            _instance = this;
             _navigationService = navigationService;
+            _apiService = apiService;
             LoadUser();
             LoadMenus();
         }
+
+        public DelegateCommand ModifyUserCommand => _modifyUserCommand ?? (_modifyUserCommand = new DelegateCommand(ModifyUserAsync));
 
         public UserResponse User
         {
@@ -28,6 +39,39 @@ namespace ProdeFutbol.Prism.ViewModels
         }
 
         public ObservableCollection<MenuItemViewModel> Menus { get; set; }
+
+        private async void ModifyUserAsync()
+        {
+            await _navigationService.NavigateAsync($"/ProdeMasterDetailPage/NavigationPage/{nameof(ModifyUserPage)}");
+        }
+
+        public static ProdeMasterDetailPageViewModel GetInstance()
+        {
+            return _instance;
+        }
+
+        public async void ReloadUser()
+        {
+            string url = App.Current.Resources["UrlAPI"].ToString();
+            bool connection = await _apiService.CheckConnectionAsync(url);
+            if (!connection)
+            {
+                return;
+            }
+
+            UserResponse user = JsonConvert.DeserializeObject<UserResponse>(Settings.User);
+            TokenResponse token = JsonConvert.DeserializeObject<TokenResponse>(Settings.Token);
+            EmailRequest emailRequest = new EmailRequest
+            {
+                CultureInfo = Languages.Culture,
+                Email = user.Email
+            };
+
+            Response response = await _apiService.GetUserByEmail(url, "api", "/Account/GetUserByEmail", "bearer", token.Token, emailRequest);
+            UserResponse userResponse = (UserResponse)response.Result;
+            Settings.User = JsonConvert.SerializeObject(userResponse);
+            LoadUser();
+        }
 
         private void LoadUser()
         {

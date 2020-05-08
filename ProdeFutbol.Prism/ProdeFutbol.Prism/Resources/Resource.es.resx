@@ -267,9 +267,6 @@
   <data name="PasswordConfirmPlaceHolder" xml:space="preserve">
     <value>Ingrese la confirmación de contraseña...</value>
   </data>
-  <data name="PasswordError_Duplicate[1]" xml:space="preserve">
-    <value>Debe ingresar una contraseña de al menos seis caracteres.</value>
-  </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
@@ -290,5 +287,14 @@
   </data>
   <data name="ForgotPassword" xml:space="preserve">
     <value>¿Ha olvidado la clave?</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Cambiar clave</value>
+  </data>
+  <data name="UserUpdated" xml:space="preserve">
+    <value>El usuario se actualizó correctamente.</value>
   </data>
 </root>

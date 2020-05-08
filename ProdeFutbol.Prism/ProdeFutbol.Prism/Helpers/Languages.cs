@@ -21,6 +21,13 @@ namespace ProdeFutbol.Prism.Helpers
 
         public static string Culture { get; set; }
 
+        public static string UserUpdated => Resource.UserUpdated;
+
+        public static string Save => Resource.Save;
+
+        public static string ChangePassword => Resource.ChangePassword;
+
+
         public static string ForgotPassword => Resource.ForgotPassword;
 
         public static string PasswordRecover => Resource.PasswordRecover;

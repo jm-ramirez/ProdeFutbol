@@ -267,9 +267,6 @@
   <data name="PasswordConfirmPlaceHolder" xml:space="preserve">
     <value>Saisir le mot de passe, puis valider</value>
   </data>
-  <data name="PasswordError_Duplicate[1]" xml:space="preserve">
-    <value>Vous devez saisir un mot de passe d&amp;#39;au moins six caractères.!</value>
-  </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
@@ -290,5 +287,14 @@
   </data>
   <data name="ForgotPassword" xml:space="preserve">
     <value>Vous avez oublié votre mot de passe</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Modifier le mot de passe</value>
+  </data>
+  <data name="UserUpdated" xml:space="preserve">
+    <value>L utilisateur a été mis à jour avec succès!</value>
   </data>
 </root>
