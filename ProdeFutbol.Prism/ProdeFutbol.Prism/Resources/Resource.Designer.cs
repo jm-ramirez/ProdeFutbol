@@ -241,6 +241,15 @@ namespace ProdeFutbol.Prism.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Forgot Password.
+        /// </summary>
+        public static string ForgotPassword {
+            get {
+                return ResourceManager.GetString("ForgotPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a From camera.
         /// </summary>
         public static string FromCamera {
@@ -489,6 +498,15 @@ namespace ProdeFutbol.Prism.Resources {
         public static string PasswordPlaceHolder {
             get {
                 return ResourceManager.GetString("PasswordPlaceHolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Password Recover.
+        /// </summary>
+        public static string PasswordRecover {
+            get {
+                return ResourceManager.GetString("PasswordRecover", resourceCulture);
             }
         }
         
