@@ -8,10 +8,10 @@ using Syncfusion.SfBusyIndicator.XForms.Droid;
 namespace ProdeFutbol.Prism.Droid
 {
     [Activity(
-        Label = "Prode Mundial", 
-        Icon = "@mipmap/ic_launcher", 
-        Theme = "@style/MainTheme", 
-        MainLauncher = false, 
+        Label = "Prode Mundial",
+        Icon = "@mipmap/ic_launcher",
+        Theme = "@style/MainTheme",
+        MainLauncher = false,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
@@ -21,11 +21,21 @@ namespace ProdeFutbol.Prism.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
+            /*CrossCurrentActivity.Current.Init(this, bundle);*/
+            Xamarin.Essentials.Platform.Init(this, bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             new SfBusyIndicatorRenderer();
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
             LoadApplication(new App(new AndroidInitializer()));
+
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
