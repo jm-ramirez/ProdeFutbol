@@ -46,10 +46,7 @@ namespace ProdeFutbol.Prism.ViewModels
                 return;
             }
 
-            Response response = await _apiService.GetListAsync<TournamentResponse>(
-                url,
-                "/api",
-                "/Tournaments");
+            Response response = await _apiService.GetListAsync<TournamentResponse>(url, "/api", "/Tournaments");
             IsRunning = false;
 
 

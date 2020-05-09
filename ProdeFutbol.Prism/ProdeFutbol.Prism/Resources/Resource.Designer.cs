@@ -358,6 +358,15 @@ namespace ProdeFutbol.Prism.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Is Updated?.
+        /// </summary>
+        public static string IsUpdated {
+            get {
+                return ResourceManager.GetString("IsUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Last name.
         /// </summary>
         public static string LastName {
@@ -394,6 +403,15 @@ namespace ProdeFutbol.Prism.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a You must enter the local goals..
+        /// </summary>
+        public static string LocalGoalsError {
+            get {
+                return ResourceManager.GetString("LocalGoalsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Log in.
         /// </summary>
         public static string Login {
@@ -417,6 +435,15 @@ namespace ProdeFutbol.Prism.Resources {
         public static string Logout {
             get {
                 return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You cannot record the prediction, because the match has already started..
+        /// </summary>
+        public static string MatchAlreadyStarts {
+            get {
+                return ResourceManager.GetString("MatchAlreadyStarts", resourceCulture);
             }
         }
         
@@ -655,6 +682,42 @@ namespace ProdeFutbol.Prism.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Points.
+        /// </summary>
+        public static string Points {
+            get {
+                return ResourceManager.GetString("Points", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Prediction.
+        /// </summary>
+        public static string Prediction {
+            get {
+                return ResourceManager.GetString("Prediction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Predictions for.
+        /// </summary>
+        public static string PredictionsFor {
+            get {
+                return ResourceManager.GetString("PredictionsFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Real.
+        /// </summary>
+        public static string Real {
+            get {
+                return ResourceManager.GetString("Real", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Register.
         /// </summary>
         public static string Register {
@@ -673,6 +736,15 @@ namespace ProdeFutbol.Prism.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Select a tournament.
+        /// </summary>
+        public static string SelectTournament {
+            get {
+                return ResourceManager.GetString("SelectTournament", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Tournaments.
         /// </summary>
         public static string Tournaments {
@@ -682,11 +754,29 @@ namespace ProdeFutbol.Prism.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Update.
+        /// </summary>
+        public static string Update {
+            get {
+                return ResourceManager.GetString("Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The user was updated sucessfull.
         /// </summary>
         public static string UserUpdated {
             get {
                 return ResourceManager.GetString("UserUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You must enter the visitor goals..
+        /// </summary>
+        public static string VisitorGoalsError {
+            get {
+                return ResourceManager.GetString("VisitorGoalsError", resourceCulture);
             }
         }
     }

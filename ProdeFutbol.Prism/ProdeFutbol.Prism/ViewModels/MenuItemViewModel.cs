@@ -26,7 +26,14 @@ namespace ProdeFutbol.Prism.ViewModels
                 Settings.Token = null;
             }
 
-            await _navigationService.NavigateAsync($"/ProdeMasterDetailPage/NavigationPage/{PageName}");
+            if (IsLoginRequired && !Settings.IsLogin)
+            {
+                await _navigationService.NavigateAsync($"/ProdeMasterDetailPage/NavigationPage/LoginPage");
+            }
+            else
+            {
+                await _navigationService.NavigateAsync($"/ProdeMasterDetailPage/NavigationPage/{PageName}");
+            }
         }
     }
 }
