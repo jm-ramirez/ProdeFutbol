@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using ProdeFutbol.Common.Services;
 using System.Collections.Generic;
 using System.Linq;
+using ProdeFutbol.Prism.Views;
 
 namespace ProdeFutbol.Prism.ViewModels
 {
@@ -29,6 +30,7 @@ namespace ProdeFutbol.Prism.ViewModels
         private ObservableCollection<TeamResponse> _teams;
         private DelegateCommand _changeImageCommand;
         private DelegateCommand _saveCommand;
+        private DelegateCommand _changePasswordCommand;
 
         public ModifyUserPageViewModel(INavigationService navigationService, IApiService apiService, IFilesHelper filesHelper)
             : base(navigationService)
@@ -42,6 +44,8 @@ namespace ProdeFutbol.Prism.ViewModels
             Image = User.PictureFullPath;
             LoadTeamsAsync();
         }
+
+        public DelegateCommand ChangePasswordCommand => _changePasswordCommand ?? (_changePasswordCommand = new DelegateCommand(ChangePasswordAsync));
 
         public DelegateCommand ChangeImageCommand => _changeImageCommand ?? (_changeImageCommand = new DelegateCommand(ChangeImageAsync));
 
@@ -81,6 +85,11 @@ namespace ProdeFutbol.Prism.ViewModels
         {
             get => _isEnabled;
             set => SetProperty(ref _isEnabled, value);
+        }
+
+        private async void ChangePasswordAsync()
+        {
+            await _navigationService.NavigateAsync(nameof(ChangePasswordPage));
         }
 
         private async void SaveAsync()
