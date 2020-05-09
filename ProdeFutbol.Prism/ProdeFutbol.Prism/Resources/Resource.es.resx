@@ -348,9 +348,6 @@
   <data name="MatchAlreadyStarts" xml:space="preserve">
     <value>No puedes grabar la predicción porque la partida ya ha comenzado.</value>
   </data>
-  <data name="Open_Duplicate[1]" xml:space="preserve">
-    <value>Abiertos</value>
-  </data>
   <data name="Real" xml:space="preserve">
     <value>Real</value>
   </data>
@@ -359,5 +356,17 @@
   </data>
   <data name="Prediction" xml:space="preserve">
     <value>Predicción</value>
+  </data>
+  <data name="Ranking" xml:space="preserve">
+    <value>Puesto</value>
+  </data>
+  <data name="SearchUserPlaceHolder" xml:space="preserve">
+    <value>Buscar usuario</value>
+  </data>
+  <data name="Positions" xml:space="preserve">
+    <value>Puestos</value>
+  </data>
+  <data name="Picture" xml:space="preserve">
+    <value>Imagen</value>
   </data>
 </root>

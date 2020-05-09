@@ -348,9 +348,6 @@
   <data name="MatchAlreadyStarts" xml:space="preserve">
     <value>You cannot record the prediction, because the match has already started.</value>
   </data>
-  <data name="Open" xml:space="preserve">
-    <value>Open</value>
-  </data>
   <data name="Real" xml:space="preserve">
     <value>Real</value>
   </data>
@@ -359,5 +356,17 @@
   </data>
   <data name="Prediction" xml:space="preserve">
     <value>Prediction</value>
+  </data>
+  <data name="SearchUserPlaceHolder" xml:space="preserve">
+    <value>Search user...</value>
+  </data>
+  <data name="Ranking" xml:space="preserve">
+    <value>Ranking</value>
+  </data>
+  <data name="Positions" xml:space="preserve">
+    <value>Positions</value>
+  </data>
+  <data name="Picture" xml:space="preserve">
+    <value>Picture</value>
   </data>
 </root>

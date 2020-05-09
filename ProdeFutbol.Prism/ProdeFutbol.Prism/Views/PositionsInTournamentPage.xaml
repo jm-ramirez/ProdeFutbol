@@ -3,13 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
-         	 xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+             xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
            	 xmlns:i18n="clr-namespace:ProdeFutbol.Prism.Helpers"
              ios:Page.UseSafeArea="true"
-             x:Class="ProdeFutbol.Prism.Views.MyPositionsPage"
+             x:Class="ProdeFutbol.Prism.Views.PositionsInTournamentPage"
              BackgroundColor="{StaticResource ColorBackgroud}"
+             IconImageSource="ic_action_equalizer"
              Title="{Binding Title}">
+
     <AbsoluteLayout>
         <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1"
                      AbsoluteLayout.LayoutFlags="All" 

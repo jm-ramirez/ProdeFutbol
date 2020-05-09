@@ -49,6 +49,7 @@ namespace ProdeFutbol.Prism
             containerRegistry.RegisterForNavigation<PredictionsForTournamentPage, PredictionsForTournamentPageViewModel>();
             containerRegistry.RegisterForNavigation<ClosedPredictionsForTournamentPage, ClosedPredictionsForTournamentPageViewModel>();
             containerRegistry.RegisterForNavigation<PredictionsTabbedPage, PredictionsTabbedPageViewModel>();
+            containerRegistry.RegisterForNavigation<PositionsInTournamentPage, PositionsInTournamentPageViewModel>();
         }
     }
 }
