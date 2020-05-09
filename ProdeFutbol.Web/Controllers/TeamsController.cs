@@ -14,16 +14,16 @@ namespace ProdeFutbol.Web.Controllers
     public class TeamsController : Controller
     {
         private readonly DataContext _context;
-        private readonly IImageHelper _imageHelper;
         private readonly IConverterHelper _converterHelper;
+        private readonly IBlobHelper _blobHelper;
 
         public TeamsController(DataContext context,
-            IImageHelper imageHelper,
-            IConverterHelper converterHelper)
+            IConverterHelper converterHelper,
+            IBlobHelper blobHelper)
         {
             _context = context;
-            _imageHelper = imageHelper;
             _converterHelper = converterHelper;
+            _blobHelper = blobHelper;
         }
 
         public async Task<IActionResult> Index()
@@ -64,7 +64,7 @@ namespace ProdeFutbol.Web.Controllers
 
                 if (teamViewModel.LogoFile != null)
                 {
-                    path = await _imageHelper.UploadImageAsync(teamViewModel.LogoFile, "Teams");
+                    path = await _blobHelper.UploadBlobAsync(teamViewModel.LogoFile, "teams");
                 }
 
                 TeamEntity teamEntity = _converterHelper.ToTeamEntity(teamViewModel, path, true);
@@ -121,7 +121,7 @@ namespace ProdeFutbol.Web.Controllers
 
                 if (teamViewModel.LogoFile != null)
                 {
-                    path = await _imageHelper.UploadImageAsync(teamViewModel.LogoFile, "Teams");
+                    path = await _blobHelper.UploadBlobAsync(teamViewModel.LogoFile, "teams");
                 }
 
                 TeamEntity teamEntity = _converterHelper.ToTeamEntity(teamViewModel, path, false);

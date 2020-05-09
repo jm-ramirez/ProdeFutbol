@@ -37,6 +37,11 @@ namespace ProdeFutbol.Web.Models
         [Display(Name = "Picture")]
         public string PicturePath { get; set; }
 
+        [Display(Name = "Picture")]
+        public string PictureFullPath => string.IsNullOrEmpty(PicturePath)
+            ? "https://prodefutbolweb.azurewebsites.net//images/noimage.png"
+            : $"https://prodefutbol.blob.core.windows.net/users/{PicturePath}";
+
         [Required(ErrorMessage = "The field {0} is mandatory.")]
         [Display(Name = "Favorite Team")]
         [Range(1, int.MaxValue, ErrorMessage = "You must select a team.")]

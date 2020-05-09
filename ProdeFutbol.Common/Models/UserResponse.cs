@@ -30,7 +30,7 @@ namespace ProdeFutbol.Common.Models
 
         public string PictureFullPath => string.IsNullOrEmpty(PicturePath)
             ? "https://prodefutbolweb.azurewebsites.net//images/noimage.png"
-            : $"https://prodefutbolweb.azurewebsites.net{PicturePath.Substring(1)}";
+            : $"https://prodefutbol.blob.core.windows.net/users/{PicturePath}";
 
     }
 }

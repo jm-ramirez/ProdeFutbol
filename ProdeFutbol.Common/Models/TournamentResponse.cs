@@ -23,7 +23,7 @@ namespace ProdeFutbol.Common.Models
 
         public string LogoFullPath => string.IsNullOrEmpty(LogoPath)
             ? "https://prodefutbolweb.azurewebsites.net//images/noimage.png"
-            : $"https://prodefutbolweb.azurewebsites.net{LogoPath.Substring(1)}";
+            : $"https://prodefutbol.blob.core.windows.net/tournaments/{LogoPath}";
 
         public List<GroupResponse> Groups { get; set; }
     }

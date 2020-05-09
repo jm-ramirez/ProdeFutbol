@@ -29,6 +29,12 @@ namespace ProdeFutbol.Web.Data.Entities
         [Display(Name = "Picture")]
         public string PicturePath { get; set; }
 
+        [Display(Name = "Picture")]
+        public string PictureFullPath => string.IsNullOrEmpty(PicturePath)
+            ? "https://prodefutbolweb.azurewebsites.net//images/noimage.png"
+            : $"https://prodefutbol.blob.core.windows.net/users/{PicturePath}";
+
+
         [Display(Name = "User Type")]
         public UserType UserType { get; set; }
 

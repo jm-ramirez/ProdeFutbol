@@ -3,6 +3,7 @@ using ProdeFutbol.Web.Data.Entities;
 using ProdeFutbol.Web.Helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,11 +13,18 @@ namespace ProdeFutbol.Web.Data
     {
         private readonly DataContext _context;
         private readonly IUserHelper _userHelper;
+        private readonly IBlobHelper _blobHelper;
+        private readonly Random _random;
 
-        public SeedDb(DataContext context, IUserHelper userHelper)
+        public SeedDb(
+            DataContext context,
+            IUserHelper userHelper,
+            IBlobHelper blobHelper)
         {
             _context = context;
             _userHelper = userHelper;
+            _blobHelper = blobHelper;
+            _random = new Random();
         }
 
         public async Task SeedAsync()
@@ -25,17 +33,51 @@ namespace ProdeFutbol.Web.Data
             await CheckRolesAsync();
             await CheckTeamsAsync();
             await CheckTournamentsAsync();
-            await CheckUserAsync("1010", "Juan", "Ramirez", "juanchiramirez5@gmail.com", "341 585 3694", "Moreno 2259", UserType.Admin);
+            await CheckUserAsync("1010", "Juan Manuel", "Ramirez", "juanchiramirez5@gmail.com", "3415 853694", "Moreno 2259", UserType.Admin, "Juanchi.jpg");
             await CheckUsersAsync();
             await CheckPreditionsAsync();
         }
 
-        private async Task CheckUsersAsync() //Este metodo es para crear 100 usuario aleatorios
+        private async Task CheckUsersAsync()
         {
-            for (int i = 1; i <= 100; i++)
+            List<Photo> photos = LoadPhotos();
+            int i = 0;
+            foreach (Photo photo in photos)
             {
-                await CheckUserAsync($"100{i}", "User", $"{i}", $"user{i}@yopmail.com", "350 634 2747", "Calle Luna Calle Sol", UserType.User);
+                i++;
+                await CheckUserAsync($"100{i}", photo.Firstname, photo.Lastname, $"user{i}@yopmail.com", "350 634 2747", "Calle Luna Calle Sol", UserType.User, photo.Image);
             }
+        }
+
+        private List<Photo> LoadPhotos()
+        {
+            return new List<Photo>
+            {
+                new Photo { Firstname = "Adala", Lastname = "Samir", Image = "Adala.jpg" },
+                new Photo { Firstname = "Amalia", Lastname = "Lopez", Image = "Amalia.jpg" },
+                new Photo { Firstname = "Camila", Lastname = "Cardona", Image = "Camila.jpg" },
+                new Photo { Firstname = "Carolina", Lastname = "Echavarria", Image = "Carolina.jpg" },
+                new Photo { Firstname = "Claudia", Lastname = "Sanchez", Image = "Claudia.jpg" },
+                new Photo { Firstname = "Gilberto", Lastname = "Medez", Image = "Gilberto.jpg" },
+                new Photo { Firstname = "Jhon", Lastname = "Smith", Image = "Jhon.jpg" },
+                new Photo { Firstname = "Ken", Lastname = "Rogers", Image = "Ken.jpg" },
+                new Photo { Firstname = "Laura", Lastname = "Zuluaga", Image = "Laura.jpg" },
+                new Photo { Firstname = "Luisa", Lastname = "Zapata", Image = "Luisa.jpg" },
+                new Photo { Firstname = "Manuel", Lastname = "Rodriguez", Image = "Manuel.jpg" },
+                new Photo { Firstname = "Manuela", Lastname = "Ateortua", Image = "Manuela.jpg" },
+                new Photo { Firstname = "Mario", Lastname = "Bedoya", Image = "Mario.jpg" },
+                new Photo { Firstname = "Monica", Lastname = "Cano", Image = "Monica.jpg" },
+                new Photo { Firstname = "Pedro", Lastname = "Correa", Image = "Pedro.jpg" },
+                new Photo { Firstname = "Penelope", Lastname = "Arias", Image = "Penelope.jpg" },
+                new Photo { Firstname = "Pepe", Lastname = "Lopez", Image = "Pepe.jpg" },
+                new Photo { Firstname = "Raul", Lastname = "Matinez", Image = "Raul.jpg" },
+                new Photo { Firstname = "Roberto", Lastname = "Rivas", Image = "Roberto.jpg" },
+                new Photo { Firstname = "Rosa", Lastname = "Velasquez", Image = "Rosa.jpg" },
+                new Photo { Firstname = "Rosario", Lastname = "Sandoval", Image = "Rosario.jpg" },
+                new Photo { Firstname = "Sandra", Lastname = "Machado", Image = "Sandra.jpg" },
+                new Photo { Firstname = "Sandro", Lastname = "Ruiz", Image = "Sandro.jpg" },
+                new Photo { Firstname = "Teresa", Lastname = "Santamaria", Image = "Teresa.jpg" }
+            };
         }
 
         private async Task CheckPreditionsAsync()
@@ -56,19 +98,17 @@ namespace ProdeFutbol.Web.Data
 
         private void AddPrediction(UserEntity user)
         {
-            Random random = new Random();
             foreach (MatchEntity match in _context.Matches)
             {
                 _context.Predictions.Add(new PredictionEntity
                 {
-                    GoalsLocal = random.Next(0, 5),
-                    GoalsVisitor = random.Next(0, 5),
+                    GoalsLocal = _random.Next(0, 5),
+                    GoalsVisitor = _random.Next(0, 5),
                     Match = match,
                     User = user
                 });
             }
         }
-
 
         private async Task<UserEntity> CheckUserAsync(
             string document,
@@ -77,11 +117,19 @@ namespace ProdeFutbol.Web.Data
             string email,
             string phone,
             string address,
-            UserType userType)
+            UserType userType,
+            string image)
         {
             UserEntity user = await _userHelper.GetUserAsync(email);
             if (user == null)
             {
+                string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\images\\Users", image);
+                string imageId = await _blobHelper.UploadBlobAsync(path, "users");
+
+                int totalTeams = _context.Teams.Count();
+                int random = _random.Next(1, _context.Teams.Count());
+                TeamEntity team = _context.Teams.FirstOrDefault(t => t.Id == random);
+
                 user = new UserEntity
                 {
                     FirstName = firstName,
@@ -91,12 +139,13 @@ namespace ProdeFutbol.Web.Data
                     PhoneNumber = phone,
                     Address = address,
                     Document = document,
-                    Team = _context.Teams.FirstOrDefault(),//Por defecto le pongo que me seleccione el primer club como mi equipo favorito
-                    UserType = userType
+                    Team = team,
+                    UserType = userType,
+                    PicturePath = imageId
                 };
 
-                await _userHelper.AddUserAsync(user, "123456"); //por defecto pongo contraseña 123456
-                await _userHelper.AddUserToRoleAsync(user, userType.ToString()); //asigno tipo de usuario
+                await _userHelper.AddUserAsync(user, "123456");
+                await _userHelper.AddUserToRoleAsync(user, userType.ToString());
 
                 string token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
                 await _userHelper.ConfirmEmailAsync(user, token);
@@ -105,80 +154,78 @@ namespace ProdeFutbol.Web.Data
             return user;
         }
 
-
         private async Task CheckRolesAsync()
         {
             await _userHelper.CheckRoleAsync(UserType.Admin.ToString());
             await _userHelper.CheckRoleAsync(UserType.User.ToString());
         }
 
-
         private async Task CheckTeamsAsync()
         {
-            if (!_context.Teams.Any()) //si no hay equipos
+            if (!_context.Teams.Any())
             {
-                AddTeam("Ajax");
-                AddTeam("America");
-                AddTeam("Argentina");
-                AddTeam("Atalanta");
-                AddTeam("Bayern Leverkusen");
-                AddTeam("Bayern Munich");
-                AddTeam("Benfica");
-                AddTeam("Bolivia");
-                AddTeam("Brasil");
-                AddTeam("Bucaramanga");
-                AddTeam("Canada");
-                AddTeam("Chile");
-                AddTeam("Colombia");
-                AddTeam("Costa Rica");
-                AddTeam("Borusia Dortmund");
-                AddTeam("Ecuador");
-                AddTeam("Galatasaray");
-                AddTeam("Honduras");
-                AddTeam("Inter de Milan");
-                AddTeam("Junior");
-                AddTeam("Juventus");
-                AddTeam("Leipzig");
-                AddTeam("Medellin");
-                AddTeam("Mexico");
-                AddTeam("Millonarios");
-                AddTeam("Nacional");
-                AddTeam("Napoli");
-                AddTeam("Olympique Lyon");
-                AddTeam("Once Caldas");
-                AddTeam("Panama");
-                AddTeam("Paraguay");
-                AddTeam("Peru");
-                AddTeam("Paris Saint Germain");
-                AddTeam("Santa Fe");
-                AddTeam("Shajtar");
-                AddTeam("Uruguay");
-                AddTeam("USA");
-                AddTeam("Valencia");
-                AddTeam("Venezuela");
-                AddTeam("Zenit");
+                await AddTeamAsync("Ajax");
+                await AddTeamAsync("America");
+                await AddTeamAsync("Argentina");
+                await AddTeamAsync("Barcelona");
+                await AddTeamAsync("Bayer Leverkusen");
+                await AddTeamAsync("Bolivia");
+                await AddTeamAsync("Borussia Dortmund");
+                await AddTeamAsync("Brasil");
+                await AddTeamAsync("Bucaramanga");
+                await AddTeamAsync("Canada");
+                await AddTeamAsync("Chelsea");
+                await AddTeamAsync("Chile");
+                await AddTeamAsync("Colombia");
+                await AddTeamAsync("Costa Rica");
+                await AddTeamAsync("Ecuador");
+                await AddTeamAsync("Honduras");
+                await AddTeamAsync("Inter Milan");
+                await AddTeamAsync("Junior");
+                await AddTeamAsync("Juventus");
+                await AddTeamAsync("Liverpool");
+                await AddTeamAsync("Medellin");
+                await AddTeamAsync("Mexico");
+                await AddTeamAsync("Millonarios");
+                await AddTeamAsync("Nacional");
+                await AddTeamAsync("Once Caldas");
+                await AddTeamAsync("Panama");
+                await AddTeamAsync("Paraguay");
+                await AddTeamAsync("Peru");
+                await AddTeamAsync("PSG");
+                await AddTeamAsync("Real Madrid");
+                await AddTeamAsync("Santa Fe");
+                await AddTeamAsync("Uruguay");
+                await AddTeamAsync("USA");
+                await AddTeamAsync("Venezuela");
                 await _context.SaveChangesAsync();
             }
         }
 
-        private void AddTeam(string name)
+        private async Task AddTeamAsync(string name)
         {
-            _context.Teams.Add(new TeamEntity { Name = name, LogoPath = $"~/images/Teams/{name}.jpg" });
+            string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\images\\Teams", $"{name}.jpg");
+            string imageId = await _blobHelper.UploadBlobAsync(path, "teams");
+            _context.Teams.Add(new TeamEntity { Name = name, LogoPath = imageId });
         }
 
         private async Task CheckTournamentsAsync()
         {
-            if (!_context.Tournaments.Any()) //si no hay torneos
+            if (!_context.Tournaments.Any())
             {
-                DateTime startDate = DateTime.Today.AddMonths(2).ToUniversalTime(); //ToUniversalTime significa que toma la hora de Londres
+                DateTime startDate = DateTime.Today.AddMonths(2).ToUniversalTime();
                 DateTime endDate = DateTime.Today.AddMonths(3).ToUniversalTime();
+
+                string imageIdCopaAmerica = await UploadImageTournamentAsync("Copa America 2020.png");
+                string imageIdLigaAguila = await UploadImageTournamentAsync("Liga Aguila 2020-I.png");
+                string imageIdChampions = await UploadImageTournamentAsync("Champions 2020.png");
 
                 _context.Tournaments.Add(new TournamentEntity
                 {
                     StartDate = startDate,
                     EndDate = endDate,
                     IsActive = true,
-                    LogoPath = $"~/images/Tournaments/Copa America 2020.png",
+                    LogoPath = imageIdCopaAmerica,
                     Name = "Copa America 2020",
                     Groups = new List<GroupEntity>
                     {
@@ -393,7 +440,7 @@ namespace ProdeFutbol.Web.Data
                     StartDate = startDate,
                     EndDate = endDate,
                     IsActive = true,
-                    LogoPath = $"~/images/Tournaments/Liga Aguila 2020-I.png",
+                    LogoPath = imageIdLigaAguila,
                     Name = "Liga Aguila 2020-I",
                     Groups = new List<GroupEntity>
                     {
@@ -572,9 +619,134 @@ namespace ProdeFutbol.Web.Data
                     }
                 });
 
+                startDate = DateTime.Today.AddMonths(1).ToUniversalTime();
+                endDate = DateTime.Today.AddMonths(2).ToUniversalTime();
+
+                _context.Tournaments.Add(new TournamentEntity
+                {
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    IsActive = true,
+                    LogoPath = imageIdChampions,
+                    Name = "Champions 2020",
+                    Groups = new List<GroupEntity>
+                    {
+                        new GroupEntity
+                        {
+                             Name = "A",
+                             GroupDetails = new List<GroupDetailEntity>
+                             {
+                                 new GroupDetailEntity { Team = _context.Teams.FirstOrDefault(t => t.Name == "Ajax") },
+                                 new GroupDetailEntity { Team = _context.Teams.FirstOrDefault(t => t.Name == "Barcelona") }
+                             },
+                             Matches = new List<MatchEntity>
+                             {
+                                 new MatchEntity
+                                 {
+                                     Date = startDate.AddHours(14),
+                                     Local = _context.Teams.FirstOrDefault(t => t.Name == "Ajax"),
+                                     Visitor = _context.Teams.FirstOrDefault(t => t.Name == "Barcelona")
+                                 },
+                                 new MatchEntity
+                                 {
+                                     Date = startDate.AddHours(17),
+                                     Local = _context.Teams.FirstOrDefault(t => t.Name == "Barcelona"),
+                                     Visitor = _context.Teams.FirstOrDefault(t => t.Name == "Ajax")
+                                 }
+                             }
+                        },
+                        new GroupEntity
+                        {
+                             Name = "B",
+                             GroupDetails = new List<GroupDetailEntity>
+                             {
+                                 new GroupDetailEntity { Team = _context.Teams.FirstOrDefault(t => t.Name == "Bayer Leverkusen") },
+                                 new GroupDetailEntity { Team = _context.Teams.FirstOrDefault(t => t.Name == "Chelsea") }
+                             },
+                             Matches = new List<MatchEntity>
+                             {
+                                 new MatchEntity
+                                 {
+                                     Date = startDate.AddDays(1).AddHours(14),
+                                     Local = _context.Teams.FirstOrDefault(t => t.Name == "Bayer Leverkusen"),
+                                     Visitor = _context.Teams.FirstOrDefault(t => t.Name == "Chelsea")
+                                 },
+                                 new MatchEntity
+                                 {
+                                     Date = startDate.AddDays(1).AddHours(17),
+                                     Local = _context.Teams.FirstOrDefault(t => t.Name == "Chelsea"),
+                                     Visitor = _context.Teams.FirstOrDefault(t => t.Name == "Bayer Leverkusen")
+                                 }
+                             }
+                        },
+                        new GroupEntity
+                        {
+                             Name = "C",
+                             GroupDetails = new List<GroupDetailEntity>
+                             {
+                                 new GroupDetailEntity { Team = _context.Teams.FirstOrDefault(t => t.Name == "Borussia Dortmund") },
+                                 new GroupDetailEntity { Team = _context.Teams.FirstOrDefault(t => t.Name == "Inter Milan") }
+                             },
+                             Matches = new List<MatchEntity>
+                             {
+                                 new MatchEntity
+                                 {
+                                     Date = startDate.AddDays(1).AddHours(14),
+                                     Local = _context.Teams.FirstOrDefault(t => t.Name == "Borussia Dortmund"),
+                                     Visitor = _context.Teams.FirstOrDefault(t => t.Name == "Inter Milan")
+                                 },
+                                 new MatchEntity
+                                 {
+                                     Date = startDate.AddDays(1).AddHours(17),
+                                     Local = _context.Teams.FirstOrDefault(t => t.Name == "Inter Milan"),
+                                     Visitor = _context.Teams.FirstOrDefault(t => t.Name == "Borussia Dortmund")
+                                 }
+                             }
+                        },
+                        new GroupEntity
+                        {
+                             Name = "D",
+                             GroupDetails = new List<GroupDetailEntity>
+                             {
+                                 new GroupDetailEntity { Team = _context.Teams.FirstOrDefault(t => t.Name == "PSG") },
+                                 new GroupDetailEntity { Team = _context.Teams.FirstOrDefault(t => t.Name == "Real Madrid") }
+                             },
+                             Matches = new List<MatchEntity>
+                             {
+                                 new MatchEntity
+                                 {
+                                     Date = startDate.AddDays(1).AddHours(14),
+                                     Local = _context.Teams.FirstOrDefault(t => t.Name == "PSG"),
+                                     Visitor = _context.Teams.FirstOrDefault(t => t.Name == "Real Madrid")
+                                 },
+                                 new MatchEntity
+                                 {
+                                     Date = startDate.AddDays(1).AddHours(17),
+                                     Local = _context.Teams.FirstOrDefault(t => t.Name == "Real Madrid"),
+                                     Visitor = _context.Teams.FirstOrDefault(t => t.Name == "PSG")
+                                 }
+                             }
+                        }
+                    }
+                });
+
                 await _context.SaveChangesAsync();
             }
         }
 
+        private async Task<string> UploadImageTournamentAsync(string name)
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\images\\Tournaments", name);
+            return await _blobHelper.UploadBlobAsync(path, "tournaments");
+        }
+
+        private class Photo
+        {
+            public string Firstname { get; set; }
+
+            public string Lastname { get; set; }
+
+            public string Image { get; set; }
+        }
     }
 }
