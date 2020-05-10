@@ -140,7 +140,8 @@ namespace ProdeFutbol.Prism.ViewModels
             IsRunning = true;
             IsEnabled = false;
             string url = App.Current.Resources["UrlAPI"].ToString();
-            if (!_apiService.CheckConnection())
+            bool connection = await _apiService.CheckConnectionAsync(url);
+            if (!connection)
             {
                 IsRunning = false;
                 IsEnabled = true;
@@ -241,7 +242,8 @@ namespace ProdeFutbol.Prism.ViewModels
         private async void LoadTeamsAsync()
         {
             string url = App.Current.Resources["UrlAPI"].ToString();
-            if (!_apiService.CheckConnection())
+            bool connection = await _apiService.CheckConnectionAsync(url);
+            if (!connection)
             {
                 await App.Current.MainPage.DisplayAlert(Languages.Error, Languages.ConnectionError, Languages.Accept);
                 return;

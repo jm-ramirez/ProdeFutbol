@@ -48,7 +48,8 @@ namespace ProdeFutbol.Prism.ViewModels
         {
             IsRunning = true;
             var url = App.Current.Resources["UrlAPI"].ToString();
-            if (!_apiService.CheckConnection())
+            var connection = await _apiService.CheckConnectionAsync(url);
+            if (!connection)
             {
                 IsRunning = false;
                 await App.Current.MainPage.DisplayAlert(Languages.Error, Languages.ConnectionError, Languages.Accept);

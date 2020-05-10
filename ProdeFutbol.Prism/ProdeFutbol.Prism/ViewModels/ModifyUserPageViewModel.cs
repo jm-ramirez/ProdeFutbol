@@ -227,7 +227,8 @@ namespace ProdeFutbol.Prism.ViewModels
             IsRunning = true;
             IsEnabled = false;
             string url = App.Current.Resources["UrlAPI"].ToString();
-            if (!_apiService.CheckConnection())
+            bool connection = await _apiService.CheckConnectionAsync(url);
+            if (!connection)
             {
                 IsRunning = false;
                 IsEnabled = true;

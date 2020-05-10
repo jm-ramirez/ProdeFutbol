@@ -53,7 +53,8 @@ namespace ProdeFutbol.Prism.ViewModels
         public async void ReloadUser()
         {
             string url = App.Current.Resources["UrlAPI"].ToString();
-            if (!_apiService.CheckConnection())
+            bool connection = await _apiService.CheckConnectionAsync(url);
+            if (!connection)
             {
                 return;
             }
