@@ -190,6 +190,9 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Plugin.FacebookClient">
+      <Version>2.2.1</Version>
+    </PackageReference>
     <PackageReference Include="Plugin.Permissions">
       <Version>6.0.1</Version>
     </PackageReference>
@@ -244,6 +247,9 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\ic_action_equalizer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_fb.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

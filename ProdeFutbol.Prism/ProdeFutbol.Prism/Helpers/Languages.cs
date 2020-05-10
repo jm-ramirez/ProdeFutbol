@@ -17,6 +17,8 @@ namespace ProdeFutbol.Prism.Helpers
 
         public static string Culture { get; set; }
 
+        public static string LoginFacebook => Resource.LoginFacebook;
+
         public static string SearchUserPlaceHolder => Resource.SearchUserPlaceHolder;
 
         public static string Ranking => Resource.Ranking;
