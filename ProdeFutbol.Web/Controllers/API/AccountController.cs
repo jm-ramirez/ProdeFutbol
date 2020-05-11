@@ -127,7 +127,7 @@ namespace ProdeFutbol.Web.Controllers.API
             string picturePath = userEntity.PicturePath;
             if (request.PictureArray != null && request.PictureArray.Length > 0)
             {
-                picturePath = await _blobHelper.UploadBlobAsync(request.PictureArray, "Users");
+                picturePath = await _blobHelper.UploadBlobAsync(request.PictureArray, "users");
             }
 
             userEntity.FirstName = request.FirstName;
@@ -213,7 +213,7 @@ namespace ProdeFutbol.Web.Controllers.API
             string picturePath = string.Empty;
             if (request.PictureArray != null && request.PictureArray.Length > 0)
             {
-                picturePath = await _blobHelper.UploadBlobAsync(request.PictureArray, "Users");
+                picturePath = await _blobHelper.UploadBlobAsync(request.PictureArray, "users");
             }
 
             user = new UserEntity
