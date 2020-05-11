@@ -430,15 +430,6 @@ namespace ProdeFutbol.Prism.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Login with Facebook.
-        /// </summary>
-        public static string LoginFacebook {
-            get {
-                return ResourceManager.GetString("LoginFacebook", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Busca una cadena traducida similar a Logout.
         /// </summary>
         public static string Logout {
